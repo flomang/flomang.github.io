@@ -18,16 +18,16 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Your awesome title
-email: your-email@example.com
+title: Techcraft 
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  CyberSpace, the final frontier. These are the voyages of the cyber-ship Explorer. 
+  Our mission: to explore the vast expanse of digital worlds, to uncover the secrets of the virtual universe, 
+  to boldly push the boundaries of what is possible with new technologies. 
+  Equipped with advanced artificial intelligence and neural network systems, 
+  we will navigate the ever-changing landscape of the cyber realm, uncovering new possibilities at every turn.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+github_username:  flomang 
 
 # Build settings
 theme: minima
