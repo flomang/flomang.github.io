@@ -1,0 +1,111 @@
+---
+layout: post
+title:  "Chapter 1 - A blinking LED"
+date:   2023-02-14 11:01:43 -0700
+categories: jekyll update
+---
+
+
+In this chapter we will be using a raspberry PI to control a blnking LED. Assuming you already have a RPi, breadboard, and GPIO extension board, the following components will also be needed:
+
+* 1x LED
+* 1x resistor 220 (Ω) ohms
+* 2x jumper cables
+
+Although the color of your jumper cables do not mater, it is good to follow a best practice of using the color black to depict ground. 
+
+Before building your circuit with your Raspberry Pi, it's crucial to take necessary precautions to avoid any potential damage to the device or yourself. Start by turning off your Raspberry Pi, and then ground yourself by touching a metal object or wearing an anti-static wristband. This step helps to discharge any static buildup on your body, which could harm the sensitive components of the Raspberry Pi. By following these precautions, you can minimize the risk of damaging your Raspberry Pi or other electronics while building your circuit.
+
+Build your circuit according to the diagram below:
+![LED circuit](/assets/images/chapt-01-c.png "LED circuit")
+![LED circuit](/assets/images/chapt-01-a.png "LED circuit")
+
+After you have built your circuit power on your RPi. We need to code the blinking of the LED next, but first a brief description of the components. 
+
+**LED:**
+An LED, or light-emitting diode, is a specialized type of diode that emits light when current flows through it in the correct direction. Like all diodes, an LED has two poles, and it only works if current flows from the positive pole (the anode) to the negative pole (the cathode). To properly connect an LED to a power source, you must connect the longer pin (the anode) to the positive output, and the shorter pin (the cathode) to the negative output, also known as ground. Since this type of component only allows current to flow in one direction, it's known as a polar component.
+
+All common two-lead diodes, including LEDs, work in this same way. They only conduct electricity if the voltage of the anode is higher than the voltage of the cathode, and most common diodes have an operating voltage range between 1.9 and 3.4 volts. It's important to avoid exceeding this voltage range, as doing so can damage or burn out the LED. For this reason LEDs cannot be connected directly to a power supply with using a resistor. 
+
+**Resistor:**
+Resistors are fundamental passive electronic components that are used to limit or regulate the flow of electrical current in a circuit. The unit of measurement for a resistor's resistance is the Ohm (Ω). Resistance can be denoted in various prefixes, such as kilo-ohms (kΩ) and mega-ohms (MΩ), where 1MΩ is equal to 1000kΩ and 1kΩ is equal to 1000Ω.
+
+![resistor](/assets/images/chapt-01-b.png "Resistor")
+
+The physical appearance of a resistor is shown on the left, while the symbol used to represent it in a circuit diagram or schematic is shown on the right. The color bands on a resistor are a shorthand code used to identify its resistance value. For more details on resistor color codes, please refer to the documentation that comes with your kit.
+
+When a resistor is added to an electronic circuit with a fixed voltage, it reduces the current output. This relationship between current, voltage, and resistance is described by Ohm's Law, which states that I (current) equals V (voltage) divided by R (resistance). Knowing the values of any two of these variables allows you to solve for the third.
+
+For example, in the diagram provided, the current through R1 can be calculated using Ohm's Law: 
+
+I = V/R = 5V/10kΩ = 0.0005A = 0.5mA. 
+
+Current is measured in amperes (A).
+
+Note: Unlike LEDs, resistors have no poles and are non-polar. Therefore, it does not matter which direction you insert them into a circuit.
+
+
+## Let's code 
+According to the circuit, when the pin at GPIO17 is high, the LED will turn ON. Conversely, when the GPIO17 RPi output level is low, the LED turns OFF. Therefore, we can let GPIO17 cycle output high and output low level to make the LED blink. Let's code this with Rust. 
+
+Create a new cargo project.
+```
+cargo new chap01 
+cd chap01 
+```
+
+Add the rust_gpiozero crate as a dependency to your cargo project:
+```
+[dependencies]
+ rust_gpiozero = "0.2.0"
+```
+
+Next, add this to your main.rs file.
+
+```
+use rust_gpiozero::*;
+
+fn main() {
+    // Create a new LED attached to Pin 17
+    let mut led = LED::new(17);
+
+    // on_time = 2 secs, off_time=3 secs
+    led.blink(2.0,3.0);
+
+    // prevent program from exiting immediately
+    led.wait();
+}
+```
+
+Build the project for the raspberry PI ensuring that we target the raspberry PIs chipset.
+
+```
+cargo build --target=armv7-unknown-linux-musleabihf --release
+```
+
+Finally, deploy to your device and run:
+```
+scp -i ~/.ssh/pi_rsa chapter-01 pi@192.168.1.7:~/chap01
+ssh -i ~/.ssh/pi_rsa pi@192.168.1.7 ./chap01
+```
+
+Congraduations, you should see a blinking light that flashes 2 seconds on and 3 seconds off. 
+
+## Optional Exercise
+Let's reinforce what we've learned here with some practice. In this exercise we will be simulating traffice lights. You will need:
+
+* 3x LEDS
+* 3x resistors of 220 ohms
+* 6x jumper cables
+
+Once again, you can use any colors for this project but I would advise that you at least use green, yellow, and red for the LEDs. Your circuit should include all three LED connected to three different GPIO pins. 
+
+Your circuit should start out by turning the green LED on for 2 seconds. Then the yellow LED should turn on for 1 second. Finally, the red LED should turn on for 2 seconds. Only one LED should be on at any given time. 
+
+The sequence again:
+
+* green - 2 seconds
+* yellow - 1 second
+* red - 2 seconds
+
+Coding hints: Use thread::spawn to run each LED in a separate thread. Make sure you join in main to block the main thread from exiting.

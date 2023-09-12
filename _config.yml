@@ -18,13 +18,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Techcraft 
+title: the standup
 description: >- # this means to ignore newlines until "baseurl:"
-  CyberSpace, the final frontier. These are the voyages of the cyber-ship Explorer. 
-  Our mission: to explore the vast expanse of digital worlds, to uncover the secrets of the virtual universe, 
-  to boldly push the boundaries of what is possible with new technologies. 
-  Equipped with advanced artificial intelligence and neural network systems, 
-  we will navigate the ever-changing landscape of the cyber realm, uncovering new possibilities at every turn.
+  Join the adventure as we explore the digital universe, sharing insights and the latest tech trends to keep you inspired and curious!.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  flomang 
